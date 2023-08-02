@@ -5,12 +5,12 @@ import Main from "./components/Main";
 import Hightlights from "./components/Hightlights";
 
 function Home() {
-  const [temperature, setTemperature] = useState("15"); // mostrar temperatura actual
-  const [description, setDescription] = useState("Shower"); //mostrar descripcion del dia
-  const [date, setDate] = useState("Mon, 3 jul"); //mostrar fecha actual
-  const [forecastDate, setForecastDate] = useState(""); //mostrar fecha en cada card de Main
-  const [forecastTemp, setForecastTemp] = useState([""]); //mostrar temperatura de dia y noche de cada card de Main
-  
+  const [temperature, setTemperature] = useState("15");
+  const [description, setDescription] = useState("Shower");
+  const [date, setDate] = useState("Mon, 3 jul");
+  const [forecastDate, setForecastDate] = useState("");
+  const [forecastTemp, setForecastTemp] = useState([]);
+
   //Mostrar info de Hightlights
   const [windSpeed, setWindSpeed] = useState("7");
   const [humidity, setHumidity] = useState("84");
@@ -21,7 +21,18 @@ function Home() {
 
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
 
   const prevFahrenheit = useRef(fahrenheit);
@@ -29,10 +40,10 @@ function Home() {
   useEffect(() => {
     getData();
     getDate();
-    if (prevFahrenheit.current !== fahrenheit) { //Verifica si la variable fahrenheit ah cambiado su valor.
+    if (prevFahrenheit.current !== fahrenheit) {
       getData();
     }
-    prevFahrenheit.current = fahrenheit; //actualiza el valor de prevFahrenheit y lo guarda.
+    prevFahrenheit.current = fahrenheit;
   }, [fahrenheit]);
 
   function getData() {
@@ -76,9 +87,10 @@ function Home() {
             Math.round(data.daily[4].temp.day),
             Math.round(data.daily[4].temp.night),
           ];
-          setForecastTemp([temDay1, temDay2, temDay3, temDay4, temDay5])
+          setForecastTemp([temDay1, temDay2, temDay3, temDay4, temDay5]);
 
-          function convertTime(unixTimestamp) { //convertir de Unix time stamp a formato reducido en inglés
+          function convertTime(unixTimestamp) {
+            //convertir de Unix time stamp a formato reducido en inglés
             const date = new Date(unixTimestamp * 1000);
             const options = {
               weekday: "short",
@@ -100,12 +112,11 @@ function Home() {
             readableDay4,
             readableDay5,
           ]);
-          
+
           setWindSpeed(Math.round(data.current.wind_speed * 10)); //Obtener la velocidad del viento
           setHumidity(data.current.humidity);
-          setVisibility(Math.round((data.current.visibility) / 1000));
+          setVisibility(Math.round(data.current.visibility / 1000));
           setPressure(data.current.pressure);
-
         });
     });
   }
@@ -122,15 +133,15 @@ function Home() {
 
   const yes = "imperial";
   const no = "metric";
-  const changeToFahrenheit = (data)=> {
+  const changeToFahrenheit = (data) => {
     if (data) {
       setFehrenheit(yes);
       console.log(fahrenheit);
     } else {
       setFehrenheit(no);
-      console.log(fahrenheit)
+      console.log(fahrenheit);
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -142,21 +153,19 @@ function Home() {
           day3={forecastDate[2]}
           day4={forecastDate[3]}
           day5={forecastDate[4]}
-
-          tempDay1 = {forecastTemp[0]}
-          tempDay2 = {forecastTemp[1]}
-          tempDay3 = {forecastTemp[2]}
-          tempDay4 = {forecastTemp[3]}
-          tempDay5 = {forecastTemp[4]}
-
-          onData = {changeToFahrenheit}
+          tempDay1={forecastTemp[0]}
+          tempDay2={forecastTemp[1]}
+          tempDay3={forecastTemp[2]}
+          tempDay4={forecastTemp[3]}
+          tempDay5={forecastTemp[4]}
+          onData={changeToFahrenheit}
         />
         <h1>Today&apos;s Hightlights</h1>
-        <Hightlights 
-          wind = {windSpeed}
-          humidity = {humidity}
-          visibility = {visibility}
-          pressure = {pressure}
+        <Hightlights
+          wind={windSpeed}
+          humidity={humidity}
+          visibility={visibility}
+          pressure={pressure}
         />
       </div>
     </div>
